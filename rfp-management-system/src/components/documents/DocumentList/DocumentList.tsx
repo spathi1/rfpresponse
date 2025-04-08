@@ -2,7 +2,7 @@
 // src/components/documents/DocumentList/DocumentList.tsx
 import React, { useState } from 'react';
 import { format } from 'date-fns';
-import { FiFileText, FiEye, FiEdit, FiDownload, FiTrash2, FiCopy, FiLock } from 'react-icons/fi';
+import { FiFileText, FiEye, FiEdit, FiDownload, FiTrash2, FiCopy, FiLock } from '../../common/Icons';
 import { Document, SensitivityLevel } from '../../../types/document.types';
 import Spinner from '../../common/Spinner/Spinner';
 import Tooltip from '../../common/Tooltip/Tooltip';

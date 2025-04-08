@@ -1,6 +1,6 @@
 // src/components/search/FilterPanel/FilterPanel.tsx
 import React, { useState } from 'react';
-import { FiChevronDown, FiChevronUp, FiX } from 'react-icons/fi';
+import { FiChevronDown, FiChevronUp, FiX } from '../../common/Icons';
 import Button from '../../common/Button/Button';
 import { SearchFilter } from '../../../types/search.types';
 

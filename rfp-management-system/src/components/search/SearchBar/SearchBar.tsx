@@ -1,6 +1,6 @@
 // src/components/search/SearchBar/SearchBar.tsx
 import React, { useState, useEffect, useRef } from 'react';
-import { FiSearch, FiX, FiFilter } from 'react-icons/fi';
+import { FiSearch, FiX, FiFilter } from '../../common/Icons';
 import { useSearchSuggestions } from '../../../hooks/useSearch';
 import Button from '../../common/Button/Button';
 
@@ -125,10 +125,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
       </form>
       
       {/* Suggestions dropdown */}
-      {isFocused && suggestions.length > 0 && (
+      {isFocused && suggestions && suggestions.length > 0 && (
         <div className="absolute z-10 mt-1 w-full bg-white dark:bg-neutral-800 shadow-lg rounded-md border border-neutral-200 dark:border-neutral-700 max-h-60 overflow-auto">
           <ul className="py-1">
-            {suggestions.map((suggestion, index) => (
+            {suggestions.map((suggestion: string, index: number) => (
               <li
                 key={index}
                 className="px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer text-neutral-900 dark:text-neutral-100"
@@ -145,4 +145,3 @@ const SearchBar: React.FC<SearchBarProps> = ({
 };
 
 export default SearchBar;
-

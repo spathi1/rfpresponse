@@ -2,7 +2,7 @@
 // src/components/common/Modal/Modal.tsx
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { FiX } from 'react-icons/fi';
+import { FiX } from '../Icons';
 
 interface ModalProps {
   isOpen: boolean;
@@ -95,7 +95,7 @@ const Modal: React.FC<ModalProps> = ({
               onClick={onClose}
               className="p-1 rounded-full text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
             >
-              <FiX size={20} />
+              <FiX  size={20} />
             </button>
           </div>
         )}

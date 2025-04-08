@@ -11,26 +11,22 @@ export const useSecuritySettings = () => {
     isLoading,
     error,
     refetch,
-  } = useQuery(
-    ['security', 'settings'],
-    () => securityApi.getSecuritySettings(),
-    {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-    }
-  );
+  } = useQuery({
+    queryKey: ['security', 'settings'],
+    queryFn: () => securityApi.getSecuritySettings(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
   
-  const updateSettingsMutation = useMutation(
-    (updatedSettings: any) => securityApi.updateSecuritySettings(updatedSettings),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['security', 'settings']);
-        toast.success('Security settings updated successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to update security settings: ${error.message}`);
-      },
-    }
-  );
+  const updateSettingsMutation = useMutation({
+    mutationFn: (updatedSettings: any) => securityApi.updateSecuritySettings(updatedSettings),
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['security', 'settings']});
+      toast.success('Security settings updated successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to update security settings: ${error.message}`);
+    },
+  });
   
   return {
     settings,
@@ -38,7 +34,7 @@ export const useSecuritySettings = () => {
     error,
     refetch,
     updateSettings: updateSettingsMutation.mutate,
-    isUpdating: updateSettingsMutation.isLoading,
+    isUpdating: updateSettingsMutation.isPending,
   };
 };
 
@@ -50,26 +46,22 @@ export const usePiiSettings = () => {
     isLoading,
     error,
     refetch,
-  } = useQuery(
-    ['security', 'pii'],
-    () => securityApi.getPiiSettings(),
-    {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-    }
-  );
+  } = useQuery({
+    queryKey: ['security', 'pii'],
+    queryFn: () => securityApi.getPiiSettings(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
   
-  const updateSettingsMutation = useMutation(
-    (updatedSettings: any) => securityApi.updatePiiSettings(updatedSettings),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['security', 'pii']);
-        toast.success('PII detection settings updated successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to update PII detection settings: ${error.message}`);
-      },
-    }
-  );
+  const updateSettingsMutation = useMutation({
+    mutationFn: (updatedSettings: any) => securityApi.updatePiiSettings(updatedSettings),
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['security', 'pii']});
+      toast.success('PII detection settings updated successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to update PII detection settings: ${error.message}`);
+    },
+  });
   
   return {
     settings,
@@ -77,7 +69,7 @@ export const usePiiSettings = () => {
     error,
     refetch,
     updateSettings: updateSettingsMutation.mutate,
-    isUpdating: updateSettingsMutation.isLoading,
+    isUpdating: updateSettingsMutation.isPending,
   };
 };
 
@@ -95,13 +87,11 @@ export const useAuditLogs = (
     isLoading,
     error,
     refetch,
-  } = useQuery(
-    ['security', 'audit-logs', page, limit, userId, action, resourceType, fromDate, toDate],
-    () => securityApi.getAuditLogs(page, limit, userId, action, resourceType, fromDate, toDate),
-    {
-      keepPreviousData: true,
-    }
-  );
+  } = useQuery({
+    queryKey: ['security', 'audit-logs', page, limit, userId, action, resourceType, fromDate, toDate],
+    queryFn: () => securityApi.getAuditLogs(page, limit, userId, action, resourceType, fromDate, toDate),
+    placeholderData: (oldData) => oldData, // This is the equivalent to keepPreviousData in v5
+  });
   
   return {
     logs: data?.logs || [],
@@ -120,53 +110,45 @@ export const useSensitivityLevels = () => {
     isLoading,
     error,
     refetch,
-  } = useQuery(
-    ['security', 'sensitivity-levels'],
-    () => securityApi.getSensitivityLevels(),
-    {
-      staleTime: 10 * 60 * 1000, // 10 minutes
-    }
-  );
+  } = useQuery({
+    queryKey: ['security', 'sensitivity-levels'],
+    queryFn: () => securityApi.getSensitivityLevels(),
+    staleTime: 10 * 60 * 1000, // 10 minutes
+  });
   
-  const createLevelMutation = useMutation(
-    (level: any) => securityApi.createSensitivityLevel(level),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['security', 'sensitivity-levels']);
-        toast.success('Sensitivity level created successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to create sensitivity level: ${error.message}`);
-      },
-    }
-  );
+  const createLevelMutation = useMutation({
+    mutationFn: (level: any) => securityApi.createSensitivityLevel(level),
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['security', 'sensitivity-levels']});
+      toast.success('Sensitivity level created successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to create sensitivity level: ${error.message}`);
+    },
+  });
   
-  const updateLevelMutation = useMutation(
-    (params: { id: string; updates: any }) =>
+  const updateLevelMutation = useMutation({
+    mutationFn: (params: { id: string; updates: any }) =>
       securityApi.updateSensitivityLevel(params.id, params.updates),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['security', 'sensitivity-levels']);
-        toast.success('Sensitivity level updated successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to update sensitivity level: ${error.message}`);
-      },
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['security', 'sensitivity-levels']});
+      toast.success('Sensitivity level updated successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to update sensitivity level: ${error.message}`);
+    },
+  });
   
-  const deleteLevelMutation = useMutation(
-    (id: string) => securityApi.deleteSensitivityLevel(id),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['security', 'sensitivity-levels']);
-        toast.success('Sensitivity level deleted successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to delete sensitivity level: ${error.message}`);
-      },
-    }
-  );
+  const deleteLevelMutation = useMutation({
+    mutationFn: (id: string) => securityApi.deleteSensitivityLevel(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['security', 'sensitivity-levels']});
+      toast.success('Sensitivity level deleted successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to delete sensitivity level: ${error.message}`);
+    },
+  });
   
   return {
     levels: levels || [],
@@ -174,11 +156,11 @@ export const useSensitivityLevels = () => {
     error,
     refetch,
     createLevel: createLevelMutation.mutate,
-    isCreating: createLevelMutation.isLoading,
+    isCreating: createLevelMutation.isPending,
     updateLevel: updateLevelMutation.mutate,
-    isUpdating: updateLevelMutation.isLoading,
+    isUpdating: updateLevelMutation.isPending,
     deleteLevel: deleteLevelMutation.mutate,
-    isDeleting: deleteLevelMutation.isLoading,
+    isDeleting: deleteLevelMutation.isPending,
   };
 };
 
@@ -188,43 +170,39 @@ export const useComplianceReports = (reportType: string, period: string) => {
     isLoading,
     error,
     refetch,
-  } = useQuery(
-    ['security', 'compliance-reports', reportType, period],
-    () => securityApi.getComplianceReports(reportType, period),
-    {
-      staleTime: 10 * 60 * 1000, // 10 minutes
-    }
-  );
+  } = useQuery({
+    queryKey: ['security', 'compliance-reports', reportType, period],
+    queryFn: () => securityApi.getComplianceReports(reportType, period),
+    staleTime: 10 * 60 * 1000, // 10 minutes
+  });
   
-  const generateReportMutation = useMutation(
-    (params: { reportType: string; fromDate: string; toDate: string; format?: string }) =>
+  const generateReportMutation = useMutation({
+    mutationFn: (params: { reportType: string; fromDate: string; toDate: string; format?: string }) =>
       securityApi.generateComplianceReport(
         params.reportType,
         params.fromDate,
         params.toDate,
         params.format
       ),
-    {
-      onSuccess: (data) => {
-        // Create a download link for the blob
-        const url = window.URL.createObjectURL(new Blob([data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `compliance-report-${Date.now()}.pdf`);
-        document.body.appendChild(link);
-        link.click();
-        
-        // Clean up
-        window.URL.revokeObjectURL(url);
-        link.remove();
-        
-        toast.success('Compliance report generated successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to generate compliance report: ${error.message}`);
-      },
-    }
-  );
+    onSuccess: (data: any) => {
+      // Create a download link for the blob
+      const url = window.URL.createObjectURL(new Blob([data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `compliance-report-${Date.now()}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      
+      // Clean up
+      window.URL.revokeObjectURL(url);
+      link.remove();
+      
+      toast.success('Compliance report generated successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to generate compliance report: ${error.message}`);
+    },
+  });
   
   return {
     reports: reports || [],
@@ -232,10 +210,6 @@ export const useComplianceReports = (reportType: string, period: string) => {
     error,
     refetch,
     generateReport: generateReportMutation.mutate,
-    isGenerating: generateReportMutation.isLoading,
+    isGenerating: generateReportMutation.isPending,
   };
 };
-
-
-
-

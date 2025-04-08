@@ -13,7 +13,7 @@ import {
   FiFolder,
   FiShield,
   FiCpu
-} from 'react-icons/fi';
+} from '../../common/Icons';
 import { selectAuth } from '../../../store/slices/authSlice';
 import { UserRole } from '../../../types/user.types';
 

@@ -1,5 +1,5 @@
 // src/components/documents/DocumentGrid/DocumentGrid.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Document } from '../../../types/document.types';
 import DocumentCard from '../DocumentCard/DocumentCard';
 import Spinner from '../../common/Spinner/Spinner';
@@ -7,55 +7,86 @@ import Spinner from '../../common/Spinner/Spinner';
 interface DocumentGridProps {
   documents: Document[];
   isLoading?: boolean;
+  error?: string | null;
+  
+  // Support both naming conventions for callbacks
+  onViewDocument?: (document: Document) => void;
+  onEditDocument?: (document: Document) => void;
+  onDeleteDocument?: (document: Document) => void;
+  onDownloadDocument?: (document: Document) => void;
+  onCopyDocumentLink?: (document: Document) => void;
+  
+  // Alternative prop names used directly in Documents/index.tsx
   onView?: (document: Document) => void;
   onEdit?: (document: Document) => void;
   onDelete?: (document: Document) => void;
   onDownload?: (document: Document) => void;
   onCopy?: (document: Document) => void;
+  
+  // Selection props
+  isSelectable?: boolean;
   allowSelection?: boolean;
-  onSelectionChange?: (selectedDocuments: Document[]) => void;
+  onSelectionChange?: (documents: Document[]) => void;
+  className?: string;
 }
 
 const DocumentGrid: React.FC<DocumentGridProps> = ({
   documents,
   isLoading = false,
+  error = null,
+  
+  // Support both naming conventions
+  onViewDocument,
+  onEditDocument,
+  onDeleteDocument,
+  onDownloadDocument,
+  onCopyDocumentLink,
+  
   onView,
   onEdit,
   onDelete,
   onDownload,
   onCopy,
+  
+  isSelectable,
   allowSelection = false,
   onSelectionChange,
+  className = '',
 }) => {
-  const [selectedDocuments, setSelectedDocuments] = useState<Document[]>([]);
+  // Use either naming convention - prefer the onView style if provided
+  const handleView = onView || onViewDocument;
+  const handleEdit = onEdit || onEditDocument;
+  const handleDelete = onDelete || onDeleteDocument;
+  const handleDownload = onDownload || onDownloadDocument;
+  const handleCopy = onCopy || onCopyDocumentLink;
+  
+  // Determine if selection is enabled from either prop
+  const selectionEnabled = isSelectable || allowSelection;
+  
+  const [selectedDocumentIds, setSelectedDocumentIds] = useState<string[]>([]);
+  
+  // Update selected documents when selection changes
+  useEffect(() => {
+    if (onSelectionChange && selectionEnabled) {
+      const selectedDocuments = documents.filter(doc => 
+        selectedDocumentIds.includes(doc.id)
+      );
+      onSelectionChange(selectedDocuments);
+    }
+  }, [selectedDocumentIds, documents, onSelectionChange, selectionEnabled]);
   
   // Handle document selection
-  const handleSelect = (document: Document) => {
-    if (!allowSelection) return;
-    
-    const isSelected = selectedDocuments.some((doc) => doc.id === document.id);
-    
-    let newSelection: Document[];
-    
-    if (isSelected) {
-      newSelection = selectedDocuments.filter((doc) => doc.id !== document.id);
-    } else {
-      newSelection = [...selectedDocuments, document];
-    }
-    
-    setSelectedDocuments(newSelection);
-    
-    if (onSelectionChange) {
-      onSelectionChange(newSelection);
-    }
+  const handleSelectDocument = (document: Document) => {
+    setSelectedDocumentIds(prev => {
+      if (prev.includes(document.id)) {
+        return prev.filter(id => id !== document.id);
+      } else {
+        return [...prev, document.id];
+      }
+    });
   };
   
-  // Check if a document is selected
-  const isDocumentSelected = (document: Document): boolean => {
-    return selectedDocuments.some((doc) => doc.id === document.id);
-  };
-  
-  // If loading
+  // Render loading state
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -64,44 +95,40 @@ const DocumentGrid: React.FC<DocumentGridProps> = ({
     );
   }
   
-  // If no documents
-  if (documents.length === 0) {
+  // Render error state
+  if (error) {
     return (
-      <div className="flex flex-col items-center justify-center h-64 text-neutral-500 dark:text-neutral-400">
-        <svg
-          className="w-16 h-16 mb-4"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-          ></path>
-        </svg>
-        <p className="text-lg font-medium">No documents found</p>
-        <p className="text-sm mt-1">Upload documents or adjust your filters</p>
+      <div className="bg-danger-50 dark:bg-danger-900 dark:bg-opacity-20 text-danger-800 dark:text-danger-300 p-4 rounded-md">
+        <p className="font-medium">Error loading documents</p>
+        <p className="text-sm mt-1">{error}</p>
       </div>
     );
   }
   
+  // Render empty state
+  if (documents.length === 0) {
+    return (
+      <div className="bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md p-8 text-center">
+        <p className="text-neutral-600 dark:text-neutral-400">No documents found</p>
+      </div>
+    );
+  }
+  
+  // Render documents grid
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      {documents.map((document) => (
+    <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ${className}`}>
+      {documents.map(document => (
         <DocumentCard
           key={document.id}
           document={document}
-          onView={onView}
-          onEdit={onEdit}
-          onDelete={onDelete}
-          onDownload={onDownload}
-          onCopy={onCopy}
-          isSelectable={allowSelection}
-          isSelected={isDocumentSelected(document)}
-          onSelect={handleSelect}
+          onView={handleView}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          onDownload={handleDownload}
+          onCopy={handleCopy}
+          isSelectable={selectionEnabled}
+          isSelected={selectedDocumentIds.includes(document.id)}
+          onSelect={selectionEnabled ? handleSelectDocument : undefined}
         />
       ))}
     </div>

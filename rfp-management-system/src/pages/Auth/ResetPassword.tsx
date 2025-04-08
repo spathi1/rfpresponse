@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router';
 import { useForm } from 'react-hook-form';
-import { FiLock, FiAlertCircle, FiCheckCircle } from 'react-icons/fi';
+import { FiLock, FiAlertCircle, FiCheckCircle } from '../../components/common/Icons';
 import { useAuth } from '../../hooks/useAuth';
 import Button from '../../components/common/Button/Button';
 

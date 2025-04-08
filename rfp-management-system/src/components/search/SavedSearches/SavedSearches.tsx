@@ -2,7 +2,7 @@
 // src/components/search/SavedSearches/SavedSearches.tsx
 
 import { format } from 'date-fns';
-import { FiClock, FiStar, FiTrash2, FiEdit } from 'react-icons/fi';
+import { FiClock, FiStar, FiTrash2, FiEdit } from '../../common/Icons';
 import { SavedSearch } from '../../../types/search.types';
 import Button from '../../common/Button/Button';
 

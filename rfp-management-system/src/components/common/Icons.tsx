@@ -1,0 +1,64 @@
+// src/components/common/Icons.tsx
+import React from 'react';
+import { IconBaseProps } from 'react-icons';
+import * as FiIcons from 'react-icons/fi';
+
+// Cast the icons to any to bypass the type checking issues
+export const FiX = React.memo(FiIcons.FiX as any);
+export const FiCheck = React.memo(FiIcons.FiCheck as any);
+export const FiInfo = React.memo(FiIcons.FiInfo as any);
+export const FiAlertTriangle = React.memo(FiIcons.FiAlertTriangle as any);
+export const FiUpload = React.memo(FiIcons.FiUpload as any);
+export const FiFilter = React.memo(FiIcons.FiFilter as any);
+export const FiGrid = React.memo(FiIcons.FiGrid as any);
+export const FiList = React.memo(FiIcons.FiList as any);
+export const FiTrash2 = React.memo(FiIcons.FiTrash2 as any);
+export const FiDownload = React.memo(FiIcons.FiDownload as any);
+export const FiRefreshCw = React.memo(FiIcons.FiRefreshCw as any);
+export const FiCopy = React.memo(FiIcons.FiCopy as any);
+export const FiFolder = React.memo(FiIcons.FiFolder as any);
+export const FiFile = React.memo(FiIcons.FiFile as any);
+export const FiFileText = React.memo(FiIcons.FiFileText as any);
+export const FiImage = React.memo(FiIcons.FiImage as any);
+export const FiLock = React.memo(FiIcons.FiLock as any);
+export const FiEye = React.memo(FiIcons.FiEye as any);
+export const FiSearch = React.memo(FiIcons.FiSearch as any);
+export const FiEdit = React.memo(FiIcons.FiEdit as any);
+export const FiUsers = React.memo(FiIcons.FiUsers as any);
+export const FiAlertCircle = React.memo(FiIcons.FiAlertCircle as any);
+export const FiPieChart = React.memo(FiIcons.FiPieChart as any);
+export const FiPlus = React.memo(FiIcons.FiPlus as any);
+export const FiClock = React.memo(FiIcons.FiClock as any);
+export const FiMoreVertical = React.memo(FiIcons.FiMoreVertical as any);
+export const FiPaperclip = React.memo(FiIcons.FiPaperclip as any);
+export const FiChevronLeft = React.memo(FiIcons.FiChevronLeft as any);
+export const FiChevronRight = React.memo(FiIcons.FiChevronRight as any);
+export const FiArrowLeft = React.memo(FiIcons.FiArrowLeft as any);
+export const FiZoomIn = React.memo(FiIcons.FiZoomIn as any);
+export const FiShare2 = React.memo(FiIcons.FiShare2 as any);
+export const FiZoomOut = React.memo(FiIcons.FiZoomOut as any);
+export const FiRotateCw = React.memo(FiIcons.FiRotateCw as any);
+export const FiSun = React.memo(FiIcons.FiSun as any);
+export const FiMoon = React.memo(FiIcons.FiMoon as any);
+export const FiUser = React.memo(FiIcons.FiUser as any);
+export const FiBell = React.memo(FiIcons.FiBell as any);
+export const FiMenu = React.memo(FiIcons.FiMenu as any);
+export const FiLogOut = React.memo(FiIcons.FiLogOut as any);
+export const FiSettings = React.memo(FiIcons.FiSettings as any);
+export const FiHome = React.memo(FiIcons.FiHome as any);
+export const FiTag = React.memo(FiIcons.FiTag as any);
+export const FiShield = React.memo(FiIcons.FiShield as any);
+export const FiCpu = React.memo(FiIcons.FiCpu as any);
+export const FiChevronDown = React.memo(FiIcons.FiChevronDown as any);
+export const FiChevronUp = React.memo(FiIcons.FiChevronUp as any);
+export const FiStar = React.memo(FiIcons.FiStar as any);
+export const FiMail = React.memo(FiIcons.FiMail as any);
+export const FiCheckCircle = React.memo(FiIcons.FiCheckCircle as any);
+
+// Add missing icons
+export const FiCalendar = React.memo(FiIcons.FiCalendar as any);
+export const FiArrowUp = React.memo(FiIcons.FiArrowUp as any);
+export const FiArrowDown = React.memo(FiIcons.FiArrowDown as any);
+export const FiBarChart2 = React.memo(FiIcons.FiBarChart2 as any);
+export const FiTrendingUp = React.memo(FiIcons.FiTrendingUp as any);
+export const FiTrendingDown = React.memo(FiIcons.FiTrendingDown as any);

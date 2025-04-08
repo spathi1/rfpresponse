@@ -1,5 +1,5 @@
 // src/components/documents/DocumentCard/DocumentCard.tsx
-
+import React from 'react';
 import { Link } from 'react-router';
 import { format } from 'date-fns';
 import { 
@@ -14,7 +14,7 @@ import {
   FiEdit,
   FiCopy,
   FiDownload
-} from 'react-icons/fi';
+} from '../../common/Icons';
 import Card from '../../common/Card/Card';
 import Dropdown from '../../common/Dropdown/Dropdown';
 import Tooltip from '../../common/Tooltip/Tooltip';
@@ -229,7 +229,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({
           </div>
         </div>
         
-        {document.tags.length > 0 && (
+        {document.tags && document.tags.length > 0 && (
           <div className="mt-4">
             <div className="flex flex-wrap gap-1">
               {document.tags.slice(0, 3).map((tag, index) => (

@@ -1,4 +1,3 @@
-
 // src/hooks/useSystem.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { systemApi } from '../api/system';
@@ -53,14 +52,12 @@ export const useSystemJobs = () => {
     isLoading: isLoadingActiveJobs,
     error: activeJobsError,
     refetch: refetchActiveJobs,
-  } = useQuery(
-    ['system', 'jobs', 'active'],
-    () => systemApi.getActiveJobs(),
-    {
-      staleTime: 30 * 1000, // 30 seconds
-      refetchInterval: 60 * 1000, // Refetch every minute
-    }
-  );
+  } = useQuery({
+    queryKey: ['system', 'jobs', 'active'],
+    queryFn: () => systemApi.getActiveJobs(),
+    staleTime: 30 * 1000, // 30 seconds
+    refetchInterval: 60 * 1000, // Refetch every minute
+  });
   
   const getJobHistory = (
     page = 1,
@@ -70,40 +67,34 @@ export const useSystemJobs = () => {
     fromDate?: string,
     toDate?: string
   ) => {
-    return useQuery(
-      ['system', 'jobs', 'history', page, limit, jobType, status, fromDate, toDate],
-      () => systemApi.getJobHistory(page, limit, jobType, status, fromDate, toDate),
-      {
-        keepPreviousData: true,
-      }
-    );
+    return useQuery({
+      queryKey: ['system', 'jobs', 'history', page, limit, jobType, status, fromDate, toDate],
+      queryFn: () => systemApi.getJobHistory(page, limit, jobType, status, fromDate, toDate),
+      placeholderData: (oldData) => oldData,
+    });
   };
   
-  const retryJobMutation = useMutation(
-    (jobId: string) => systemApi.retryJob(jobId),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['system', 'jobs'] });
-        toast.success('Job retry initiated successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to retry job: ${error.message}`);
-      },
-    }
-  );
+  const retryJobMutation = useMutation({
+    mutationFn: (jobId: string) => systemApi.retryJob(jobId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['system', 'jobs'] });
+      toast.success('Job retry initiated successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to retry job: ${error.message}`);
+    },
+  });
   
-  const cancelJobMutation = useMutation(
-    (jobId: string) => systemApi.cancelJob(jobId),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['system', 'jobs'] });
-        toast.success('Job cancelled successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to cancel job: ${error.message}`);
-      },
-    }
-  );
+  const cancelJobMutation = useMutation({
+    mutationFn: (jobId: string) => systemApi.cancelJob(jobId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['system', 'jobs'] });
+      toast.success('Job cancelled successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to cancel job: ${error.message}`);
+    },
+  });
   
   return {
     activeJobs: activeJobs || [],
@@ -112,9 +103,9 @@ export const useSystemJobs = () => {
     refetchActiveJobs,
     getJobHistory,
     retryJob: retryJobMutation.mutate,
-    isRetrying: retryJobMutation.isLoading,
+    isRetrying: retryJobMutation.isPending,
     cancelJob: cancelJobMutation.mutate,
-    isCancelling: cancelJobMutation.isLoading,
+    isCancelling: cancelJobMutation.isPending,
   };
 };
 
@@ -131,13 +122,11 @@ export const useSystemLogs = (
     isLoading,
     error,
     refetch,
-  } = useQuery(
-    ['system', 'logs', page, limit, level, component, fromDate, toDate],
-    () => systemApi.getSystemLogs(page, limit, level, component, fromDate, toDate),
-    {
-      keepPreviousData: true,
-    }
-  );
+  } = useQuery({
+    queryKey: ['system', 'logs', page, limit, level, component, fromDate, toDate],
+    queryFn: () => systemApi.getSystemLogs(page, limit, level, component, fromDate, toDate),
+    placeholderData: (oldData) => oldData,
+  });
   
   return {
     logs: data?.logs || [],
@@ -156,38 +145,32 @@ export const useSystemSettings = () => {
     isLoading,
     error,
     refetch,
-  } = useQuery(
-    ['system', 'settings'],
-    () => systemApi.getSystemSettings(),
-    {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-    }
-  );
+  } = useQuery({
+    queryKey: ['system', 'settings'],
+    queryFn: () => systemApi.getSystemSettings(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
   
-  const updateSettingsMutation = useMutation(
-    (updatedSettings: any) => systemApi.updateSystemSettings(updatedSettings),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['system', 'settings'] });
-        toast.success('System settings updated successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to update system settings: ${error.message}`);
-      },
-    }
-  );
+  const updateSettingsMutation = useMutation({
+    mutationFn: (updatedSettings: any) => systemApi.updateSystemSettings(updatedSettings),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['system', 'settings'] });
+      toast.success('System settings updated successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to update system settings: ${error.message}`);
+    },
+  });
   
-  const runMaintenanceTaskMutation = useMutation(
-    (taskType: string) => systemApi.runMaintenanceTask(taskType),
-    {
-      onSuccess: () => {
-        toast.success('Maintenance task started successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to start maintenance task: ${error.message}`);
-      },
-    }
-  );
+  const runMaintenanceTaskMutation = useMutation({
+    mutationFn: (taskType: string) => systemApi.runMaintenanceTask(taskType),
+    onSuccess: () => {
+      toast.success('Maintenance task started successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to start maintenance task: ${error.message}`);
+    },
+  });
   
   return {
     settings,
@@ -195,9 +178,9 @@ export const useSystemSettings = () => {
     error,
     refetch,
     updateSettings: updateSettingsMutation.mutate,
-    isUpdating: updateSettingsMutation.isLoading,
+    isUpdating: updateSettingsMutation.isPending,
     runMaintenanceTask: runMaintenanceTaskMutation.mutate,
-    isRunningMaintenance: runMaintenanceTaskMutation.isLoading,
+    isRunningMaintenance: runMaintenanceTaskMutation.isPending,
   };
 };
 
@@ -209,38 +192,35 @@ export const useSystemBackup = () => {
     isLoading,
     error,
     refetch,
-  } = useQuery(
-    ['system', 'backup', 'status'],
-    () => systemApi.getBackupStatus(),
-    {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-    }
-  );
+  } = useQuery({
+    queryKey: ['system', 'backup', 'status'],
+    queryFn: () => systemApi.getBackupStatus(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
   
-  const createBackupMutation = useMutation(
-    (includeDocuments = true) => systemApi.createBackup(includeDocuments),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['system', 'backup'] });
-        toast.success('Backup created successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to create backup: ${error.message}`);
-      },
-    }
-  );
+  // Fixed type definition for createBackup function
+  const createBackupMutation = useMutation({
+    mutationFn: (includeDocuments: boolean = true): Promise<void> => {
+      return systemApi.createBackup(includeDocuments);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['system', 'backup'] });
+      toast.success('Backup created successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to create backup: ${error.message}`);
+    },
+  });
   
-  const restoreFromBackupMutation = useMutation(
-    (backupId: string) => systemApi.restoreFromBackup(backupId),
-    {
-      onSuccess: () => {
-        toast.success('Restore initiated successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to restore from backup: ${error.message}`);
-      },
-    }
-  );
+  const restoreFromBackupMutation = useMutation({
+    mutationFn: (backupId: string) => systemApi.restoreFromBackup(backupId),
+    onSuccess: () => {
+      toast.success('Restore initiated successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to restore from backup: ${error.message}`);
+    },
+  });
   
   return {
     backupStatus,
@@ -248,8 +228,8 @@ export const useSystemBackup = () => {
     error,
     refetch,
     createBackup: createBackupMutation.mutate,
-    isCreatingBackup: createBackupMutation.isLoading,
+    isCreatingBackup: createBackupMutation.isPending,
     restoreFromBackup: restoreFromBackupMutation.mutate,
-    isRestoring: restoreFromBackupMutation.isLoading,
+    isRestoring: restoreFromBackupMutation.isPending,
   };
 };

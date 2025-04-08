@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Document as PDFDocument, Page as PDFPage, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
-import { FiChevronLeft, FiChevronRight, FiDownload, FiZoomIn, FiZoomOut, FiRotateCw } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiDownload, FiZoomIn, FiZoomOut, FiRotateCw } from '../../common/Icons';
 import Spinner from '../../common/Spinner/Spinner';
 import Button from '../../common/Button/Button';
 import { Document } from '../../../types/document.types';

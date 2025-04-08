@@ -1,0 +1,75 @@
+Here's a detailed prompt you can use in another chat to request the analytics, settings, and admin pages:
+
+Prompt for Analytics, Settings, and Admin Pages
+
+I'm building an RFP document management system with React, TypeScript, and Tailwind CSS. I already have the core components and pages implemented, including document management, search functionality, and authentication. Now I need help creating these remaining parts:
+
+Analytics Components and Pages
+
+Dashboard with visualizations for document metrics, user activity, and processing statistics
+
+Charts showing document trends over time
+
+Filtering options for date ranges and data types
+
+Export capabilities for analytics data
+
+Settings Pages
+
+User profile management (name, email, password, avatar)
+
+Interface preferences (theme, language, view modes)
+
+Notification settings
+
+API key management
+
+Integration settings for external systems
+
+Admin Pages
+
+User management (list, create, edit, delete users)
+
+Role-based permissions configuration
+
+System-wide settings
+
+Taxonomy management for document categorization
+
+Audit logs and system monitoring
+
+Batch operations for documents
+
+My tech stack includes:
+
+React 18 with TypeScript
+
+Redux Toolkit for state management
+
+React Query for server-state
+
+Tailwind CSS for styling
+
+React Hook Form for form handling
+
+React Router for navigation
+
+Recharts for data visualization
+
+I want the components to follow the same architectural patterns as my existing codebase:
+
+TypeScript interfaces for all data models
+
+Custom hooks for API interactions
+
+Component separation following atomic design principles
+
+Responsive layouts that work on desktop and tablet
+
+Accessible design following WCAG 2.1 AA standards
+
+Please provide implementations for these pages and components that integrate with the existing application architecture. Make sure to include TypeScript type definitions, Redux state management where appropriate, and API service integrations.
+
+This prompt gives the next assistant all the essential information about your project and what you need to build. It specifies the technology stack and architectural patterns to ensure the new components will seamlessly integrate with your existing code.
+
+When you start the new chat, you might want to also share some of your existing component implementations so the assistant can match your coding style and patterns exactly.

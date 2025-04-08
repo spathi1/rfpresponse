@@ -1,8 +1,9 @@
 // src/pages/Auth/ForgotPassword.tsx
 
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import { useForm } from 'react-hook-form';
-import { FiMail, FiAlertCircle, FiArrowLeft } from 'react-icons/fi';
+import { FiMail, FiAlertCircle, FiArrowLeft } from '../../components/common/Icons';
 import { useAuth } from '../../hooks/useAuth';
 import Button from '../../components/common/Button/Button';
 
@@ -12,7 +13,7 @@ interface ForgotPasswordFormData {
 
 const ForgotPassword: React.FC = () => {
   const { requestPasswordReset, isRequestingPasswordReset, error } = useAuth();
-  const [isSubmitted, setIsSubmitted] = React.useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   
   const {
     register,

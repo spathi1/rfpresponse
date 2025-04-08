@@ -10,103 +10,89 @@ export const useIntegrations = () => {
     data: availableIntegrations,
     isLoading: isLoadingAvailable,
     error: availableError,
-  } = useQuery(
-    ['integrations', 'available'],
-    () => integrationApi.getAvailableIntegrations(),
-    {
-      staleTime: 10 * 60 * 1000, // 10 minutes
-    }
-  );
+  } = useQuery({
+    queryKey: ['integrations', 'available'],
+    queryFn: () => integrationApi.getAvailableIntegrations(),
+    staleTime: 10 * 60 * 1000, // 10 minutes
+  });
   
   const {
     data: activeIntegrations,
     isLoading: isLoadingActive,
     error: activeError,
     refetch: refetchActive,
-  } = useQuery(
-    ['integrations', 'active'],
-    () => integrationApi.getActiveIntegrations(),
-    {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-    }
-  );
+  } = useQuery({
+    queryKey: ['integrations', 'active'],
+    queryFn: () => integrationApi.getActiveIntegrations(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
   
   const getIntegrationDetails = (integrationId: string) => {
-    return useQuery(
-      ['integrations', integrationId],
-      () => integrationApi.getIntegrationDetails(integrationId),
-      {
-        enabled: !!integrationId,
-        staleTime: 5 * 60 * 1000, // 5 minutes
-      }
-    );
+    return useQuery({
+      queryKey: ['integrations', integrationId],
+      queryFn: () => integrationApi.getIntegrationDetails(integrationId),
+      enabled: !!integrationId,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    });
   };
   
-  const activateIntegrationMutation = useMutation(
-    (params: { integrationId: string; config: any }) =>
+  const activateIntegrationMutation = useMutation({
+    mutationFn: (params: { integrationId: string; config: any }) =>
       integrationApi.activateIntegration(params.integrationId, params.config),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['integrations', 'active']);
-        toast.success('Integration activated successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to activate integration: ${error.message}`);
-      },
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['integrations', 'active'] });
+      toast.success('Integration activated successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to activate integration: ${error.message}`);
+    },
+  });
   
-  const updateIntegrationConfigMutation = useMutation(
-    (params: { integrationId: string; config: any }) =>
+  const updateIntegrationConfigMutation = useMutation({
+    mutationFn: (params: { integrationId: string; config: any }) =>
       integrationApi.updateIntegrationConfig(params.integrationId, params.config),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['integrations']);
-        toast.success('Integration configuration updated successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to update integration configuration: ${error.message}`);
-      },
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['integrations'] });
+      toast.success('Integration configuration updated successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to update integration configuration: ${error.message}`);
+    },
+  });
   
-  const deactivateIntegrationMutation = useMutation(
-    (integrationId: string) => integrationApi.deactivateIntegration(integrationId),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['integrations', 'active']);
-        toast.success('Integration deactivated successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to deactivate integration: ${error.message}`);
-      },
-    }
-  );
+  const deactivateIntegrationMutation = useMutation({
+    mutationFn: (integrationId: string) => 
+      integrationApi.deactivateIntegration(integrationId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['integrations', 'active'] });
+      toast.success('Integration deactivated successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to deactivate integration: ${error.message}`);
+    },
+  });
   
-  const testIntegrationMutation = useMutation(
-    (integrationId: string) => integrationApi.testIntegrationConnection(integrationId),
-    {
-      onSuccess: () => {
-        toast.success('Integration test completed successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Integration test failed: ${error.message}`);
-      },
-    }
-  );
+  const testIntegrationMutation = useMutation({
+    mutationFn: (integrationId: string) => 
+      integrationApi.testIntegrationConnection(integrationId),
+    onSuccess: () => {
+      toast.success('Integration test completed successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Integration test failed: ${error.message}`);
+    },
+  });
   
-  const syncIntegrationMutation = useMutation(
-    (params: { integrationId: string; direction: 'push' | 'pull' | 'both'; options?: any }) =>
+  const syncIntegrationMutation = useMutation({
+    mutationFn: (params: { integrationId: string; direction: 'push' | 'pull' | 'both'; options?: any }) =>
       integrationApi.syncWithIntegration(params.integrationId, params.direction, params.options),
-    {
-      onSuccess: () => {
-        toast.success('Integration sync initiated successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to sync integration: ${error.message}`);
-      },
-    }
-  );
+    onSuccess: () => {
+      toast.success('Integration sync initiated successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to sync integration: ${error.message}`);
+    },
+  });
   
   return {
     availableIntegrations: availableIntegrations || [],
@@ -118,15 +104,15 @@ export const useIntegrations = () => {
     refetchActive,
     getIntegrationDetails,
     activateIntegration: activateIntegrationMutation.mutate,
-    isActivating: activateIntegrationMutation.isLoading,
+    isActivating: activateIntegrationMutation.isPending,
     updateIntegrationConfig: updateIntegrationConfigMutation.mutate,
-    isUpdating: updateIntegrationConfigMutation.isLoading,
+    isUpdating: updateIntegrationConfigMutation.isPending,
     deactivateIntegration: deactivateIntegrationMutation.mutate,
-    isDeactivating: deactivateIntegrationMutation.isLoading,
+    isDeactivating: deactivateIntegrationMutation.isPending,
     testIntegration: testIntegrationMutation.mutate,
-    isTesting: testIntegrationMutation.isLoading,
+    isTesting: testIntegrationMutation.isPending,
     syncIntegration: syncIntegrationMutation.mutate,
-    isSyncing: syncIntegrationMutation.isLoading,
+    isSyncing: syncIntegrationMutation.isPending,
   };
 };
 
@@ -143,14 +129,12 @@ export const useIntegrationLogs = (
     isLoading,
     error,
     refetch,
-  } = useQuery(
-    ['integrations', integrationId, 'logs', page, limit, level, fromDate, toDate],
-    () => integrationApi.getIntegrationLogs(integrationId, page, limit, level, fromDate, toDate),
-    {
-      enabled: !!integrationId,
-      keepPreviousData: true,
-    }
-  );
+  } = useQuery({
+    queryKey: ['integrations', integrationId, 'logs', page, limit, level, fromDate, toDate],
+    queryFn: () => integrationApi.getIntegrationLogs(integrationId, page, limit, level, fromDate, toDate),
+    enabled: !!integrationId,
+    placeholderData: (prev) => prev, // This replaces keepPreviousData in v5
+  });
   
   return {
     logs: data?.logs || [],
@@ -169,53 +153,45 @@ export const useWebhooks = () => {
     isLoading,
     error,
     refetch,
-  } = useQuery(
-    ['integrations', 'webhooks'],
-    () => integrationApi.getWebhookSettings(),
-    {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-    }
-  );
+  } = useQuery({
+    queryKey: ['integrations', 'webhooks'],
+    queryFn: () => integrationApi.getWebhookSettings(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
   
-  const createWebhookMutation = useMutation(
-    (webhook: any) => integrationApi.createWebhook(webhook),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['integrations', 'webhooks']);
-        toast.success('Webhook created successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to create webhook: ${error.message}`);
-      },
-    }
-  );
+  const createWebhookMutation = useMutation({
+    mutationFn: (webhook: any) => integrationApi.createWebhook(webhook),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['integrations', 'webhooks'] });
+      toast.success('Webhook created successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to create webhook: ${error.message}`);
+    },
+  });
   
-  const updateWebhookMutation = useMutation(
-    (params: { webhookId: string; updates: any }) =>
+  const updateWebhookMutation = useMutation({
+    mutationFn: (params: { webhookId: string; updates: any }) =>
       integrationApi.updateWebhook(params.webhookId, params.updates),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['integrations', 'webhooks']);
-        toast.success('Webhook updated successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to update webhook: ${error.message}`);
-      },
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['integrations', 'webhooks'] });
+      toast.success('Webhook updated successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to update webhook: ${error.message}`);
+    },
+  });
   
-  const deleteWebhookMutation = useMutation(
-    (webhookId: string) => integrationApi.deleteWebhook(webhookId),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['integrations', 'webhooks']);
-        toast.success('Webhook deleted successfully');
-      },
-      onError: (error: any) => {
-        toast.error(`Failed to delete webhook: ${error.message}`);
-      },
-    }
-  );
+  const deleteWebhookMutation = useMutation({
+    mutationFn: (webhookId: string) => integrationApi.deleteWebhook(webhookId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['integrations', 'webhooks'] });
+      toast.success('Webhook deleted successfully');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to delete webhook: ${error.message}`);
+    },
+  });
   
   return {
     webhooks: webhookSettings?.webhooks || [],
@@ -223,11 +199,11 @@ export const useWebhooks = () => {
     error,
     refetch,
     createWebhook: createWebhookMutation.mutate,
-    isCreating: createWebhookMutation.isLoading,
+    isCreating: createWebhookMutation.isPending,
     updateWebhook: updateWebhookMutation.mutate,
-    isUpdating: updateWebhookMutation.isLoading,
+    isUpdating: updateWebhookMutation.isPending,
     deleteWebhook: deleteWebhookMutation.mutate,
-    isDeleting: deleteWebhookMutation.isLoading,
+    isDeleting: deleteWebhookMutation.isPending,
   };
 };
 
@@ -244,14 +220,12 @@ export const useWebhookEvents = (
     isLoading,
     error,
     refetch,
-  } = useQuery(
-    ['integrations', 'webhooks', webhookId, 'events', page, limit, status, fromDate, toDate],
-    () => integrationApi.getWebhookEvents(webhookId, page, limit, status, fromDate, toDate),
-    {
-      enabled: !!webhookId,
-      keepPreviousData: true,
-    }
-  );
+  } = useQuery({
+    queryKey: ['integrations', 'webhooks', webhookId, 'events', page, limit, status, fromDate, toDate],
+    queryFn: () => integrationApi.getWebhookEvents(webhookId, page, limit, status, fromDate, toDate),
+    enabled: !!webhookId,
+    placeholderData: (prev) => prev, // This replaces keepPreviousData in v5
+  });
   
   return {
     events: data?.events || [],

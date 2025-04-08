@@ -1,17 +1,17 @@
 // src/pages/Documents/index.tsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router';
-import {
-  FiUpload,
-  FiFilter,
-  FiGrid,
-  FiList,
-  FiTrash2,
-  FiDownload,
-  FiRefreshCw,
-  FiCopy,
-  FiFolder,
-} from 'react-icons/fi';
+import { 
+  FiUpload ,
+  FiFilter ,
+  FiGrid ,
+  FiList ,
+  FiTrash2 ,
+  FiDownload ,
+  FiRefreshCw ,
+  FiCopy ,
+  FiFolder 
+} from '../../components/common/Icons';
 import { useDocuments, useCollections } from '../../hooks/useDocuments';
 import { Document, DocumentStatus, DocumentCollection } from '../../types/document.types';
 import PageHeader from '../../components/layout/PageHeader/PageHeader';
@@ -167,7 +167,7 @@ const Documents: React.FC = () => {
           <div className="flex space-x-2">
             <Button
               variant="ghost"
-              icon={<FiRefreshCw />}
+              icon={<FiRefreshCw/>}
               onClick={() => refetch()}
               disabled={isLoading}
             >
@@ -254,7 +254,7 @@ const Documents: React.FC = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  icon={<FiDownload />}
+                  icon={<FiDownload/>}
                   onClick={handleBatchDownload}
                 >
                   Download
@@ -440,7 +440,7 @@ const Documents: React.FC = () => {
             <div className="mt-6">
               <Button
                 variant="primary"
-                icon={<FiUpload />}
+                icon={<FiUpload/>}
                 onClick={() => setUploadModalOpen(true)}
               >
                 Upload Document

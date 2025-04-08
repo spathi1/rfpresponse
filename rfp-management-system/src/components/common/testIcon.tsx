@@ -1,5 +1,5 @@
 
-import { FiX } from 'react-icons/fi';
+import { FiX } from './Icons';
 
 const TestIcon = () => {
   return <FiX size={20} />;

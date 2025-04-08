@@ -1,7 +1,7 @@
 
 // src/components/common/Notification/Notification.tsx
 import React, { useEffect } from 'react';
-import { FiInfo, FiCheck, FiAlertTriangle, FiX } from 'react-icons/fi';
+import { FiInfo, FiCheck, FiAlertTriangle, FiX } from '../Icons';
 
 export type NotificationType = 'info' | 'success' | 'warning' | 'error';
 

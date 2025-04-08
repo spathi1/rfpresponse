@@ -1,7 +1,7 @@
 
 // src/components/layout/PageHeader/PageHeader.tsx
 import React, { ReactNode } from 'react';
-import { FiChevronRight } from 'react-icons/fi';
+import { FiChevronRight } from '../../common/Icons';
 import { Link } from 'react-router';
 
 interface Breadcrumb {

@@ -14,7 +14,7 @@ import {
   FiInfo,
   FiClock,
   FiUpload,
-} from 'react-icons/fi';
+} from '../../components/common/Icons';
 import { useDocument } from '../../hooks/useDocuments';
 import PageHeader from '../../components/layout/PageHeader/PageHeader';
 import ContentCard from '../../components/layout/ContentCard/ContentCard';

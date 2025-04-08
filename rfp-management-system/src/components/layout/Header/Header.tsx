@@ -11,7 +11,7 @@ import {
   FiMoon,
   FiLogOut,
   FiSettings
-} from 'react-icons/fi';
+} from '../../common/Icons';
 import { selectUI, setTheme } from '../../../store/slices/uiSlice';
 import { selectAuth, logout } from '../../../store/slices/authSlice';
 import Dropdown from '../../common/Dropdown/Dropdown';

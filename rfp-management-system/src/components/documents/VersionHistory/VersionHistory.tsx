@@ -1,7 +1,7 @@
 // src/components/documents/VersionHistory/VersionHistory.tsx
 
 import { format } from 'date-fns';
-import { FiFileText, FiDownload, FiEye } from 'react-icons/fi';
+import { FiFileText, FiDownload, FiEye }  from '../../common/Icons';
 import { DocumentVersion } from '../../../types/document.types';
 import Spinner from '../../common/Spinner/Spinner';
 import Button from '../../common/Button/Button';

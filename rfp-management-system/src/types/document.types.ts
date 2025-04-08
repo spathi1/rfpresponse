@@ -17,6 +17,8 @@ export interface Document {
   sensitivityLevel: SensitivityLevel;
   piiDetected: boolean;
   permissions: DocumentPermission[];
+  // This property is used for compatibility with other components that look for lastModified
+  lastModified: string;
 }
 
 export interface DocumentMetadata {
@@ -74,4 +76,17 @@ export interface DocumentCollection {
   documentCount: number;
   parentId?: string;
   children?: DocumentCollection[];
+}
+
+export interface DocumentSearchResult {
+  document: Document;
+  score: number;
+  highlights: DocumentHighlight[];
+}
+
+export interface DocumentHighlight {
+  field: string;
+  text: string;
+  positions: [number, number][];
+  snippets?: string[];
 }

@@ -1,6 +1,6 @@
 // src/components/documents/DocumentUpload/DocumentUpload.tsx
 import React, { useState, useCallback } from 'react';
-import { FiUpload, FiFile, FiX } from 'react-icons/fi';
+import { FiUpload, FiFile, FiX }  from '../../common/Icons';
 import Button from '../../common/Button/Button';
 import Spinner from '../../common/Spinner/Spinner';
 import { useDropzone, DropzoneOptions, FileRejection } from 'react-dropzone';

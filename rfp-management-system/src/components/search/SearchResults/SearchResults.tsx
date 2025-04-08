@@ -1,12 +1,12 @@
 // src/components/search/SearchResults/SearchResults.tsx
-
-import { FiFileText, FiEye } from 'react-icons/fi';
+import React from 'react';
+import { FiFileText, FiEye } from '../../common/Icons';
 import Spinner from '../../common/Spinner/Spinner';
-import { SearchResult } from '../../../types/search.types';
+import { DocumentSearchResult } from '../../../types/document.types';
 import Button from '../../common/Button/Button';
 
 interface SearchResultsProps {
-  results: SearchResult[];
+  results: DocumentSearchResult[];
   isLoading?: boolean;
   totalCount?: number;
   onViewDocument?: (documentId: string) => void;
@@ -114,11 +114,19 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                           {highlight.field}:
                         </span>
                         <div className="mt-1 text-neutral-600 dark:text-neutral-400 border-l-2 border-neutral-300 dark:border-neutral-700 pl-3">
-                          {highlight.snippets.map((snippet, idx) => (
+                          {highlight.snippets && highlight.snippets.map((snippet, idx) => (
                             <p key={idx} className="mb-1">
                               {highlightText(snippet, searchTerms)}...
                             </p>
                           ))}
+                          {/* If no snippets array, use the text property with positions for highlighting */}
+                          {!highlight.snippets && highlight.text && (
+                            <p className="mb-1">
+                              {highlight.positions && highlight.positions.length > 0 
+                                ? highlightPositions(highlight.text, highlight.positions)
+                                : highlightText(highlight.text, searchTerms)}
+                            </p>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -150,6 +158,34 @@ const SearchResults: React.FC<SearchResultsProps> = ({
       </div>
     </div>
   );
+};
+
+// Helper function to highlight text based on position ranges
+const highlightPositions = (text: string, positions: [number, number][]) => {
+  if (!positions || positions.length === 0) return text;
+  
+  const parts: JSX.Element[] = [];
+  let lastIndex = 0;
+  
+  positions.sort((a, b) => a[0] - b[0]);
+  
+  positions.forEach(([start, end], i) => {
+    if (start > lastIndex) {
+      parts.push(<React.Fragment key={`text-${i}`}>{text.substring(lastIndex, start)}</React.Fragment>);
+    }
+    parts.push(
+      <span key={`highlight-${i}`} className="bg-yellow-200 dark:bg-yellow-700 dark:bg-opacity-70">
+        {text.substring(start, end)}
+      </span>
+    );
+    lastIndex = end;
+  });
+  
+  if (lastIndex < text.length) {
+    parts.push(<React.Fragment key={`text-last`}>{text.substring(lastIndex)}</React.Fragment>);
+  }
+  
+  return <>{parts}</>;
 };
 
 export default SearchResults;
