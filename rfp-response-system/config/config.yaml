@@ -1,0 +1,176 @@
+# RFP Document Ingestion Configuration
+version: "1.0"
+
+# Document Source Configuration
+document_directory: "/path/to/rfp-ingestion/data"
+recursive_search: true
+output_directory: "/path/to/rfp-ingestion/processed_documents"
+
+# Document Filtering
+document_date_range:
+  min: "2022-01-01"  # ISO format date
+  max: "2025-12-31"  # ISO format date
+
+# Preprocessing Configuration
+preprocessing:
+  chunk_strategy: "section"  # Options: section, paragraph, heading
+  extract_tables: true
+  extract_images: false
+  min_chunk_size: 100  # Minimum characters for a valid chunk
+  max_chunk_size: 4000  # Maximum characters for a chunk
+  keep_full_text: false  # Whether to keep the full text in output
+
+
+# Industry Configuration
+industry_types:
+  - healthcare
+  - finance
+  - construction
+  - manufacturing
+  - technology
+  - government
+  - education
+
+# Industry-specific Keywords for Metadata Extraction
+industry_keywords:
+  healthcare:
+    - patient
+    - clinical
+    - hospital
+    - medical
+    - healthcare
+    - HIPAA
+    - EHR
+    - EMR
+    - provider
+    - telehealth
+  finance:
+    - banking
+    - investment
+    - financial
+    - portfolio
+    - transaction
+    - regulatory
+    - compliance
+    - audit
+    - risk
+    - SOX
+  construction:
+    - building
+    - construction
+    - contractor
+    - architectural
+    - engineering
+    - project
+    - safety
+    - OSHA
+    - bid
+    - schedule
+  manufacturing:
+    - production
+    - assembly
+    - supply chain
+    - quality
+    - inventory
+    - procurement
+    - logistics
+    - ISO
+    - lean
+    - automation
+  technology:
+    - software
+    - hardware
+    - network
+    - cloud
+    - security
+    - integration
+    - API
+    - SaaS
+    - database
+    - infrastructure
+  government:
+    - public sector
+    - agency
+    - municipal
+    - federal
+    - procurement
+    - RFP
+    - bidding
+    - contract
+    - compliance
+    - regulation
+  education:
+    - academic
+    - education
+    - school
+    - university
+    - student
+    - learning
+    - curriculum
+    - faculty
+    - research
+    - FERPA
+
+# Preprocessing Configuration
+preprocessing:
+  chunk_strategy: "section"  # Options: section, paragraph, heading
+  extract_tables: true
+  extract_images: false
+  min_chunk_size: 100  # Minimum characters for a valid chunk
+  max_chunk_size: 4000  # Maximum characters for a chunk
+
+# Taxonomy Configuration
+taxonomy:
+  # Base taxonomy structure will be extended with documents
+  industries:
+    healthcare:
+      description: "Healthcare industry documents"
+      subtypes:
+        - provider
+        - payer
+        - pharmaceutical
+        - medical_device
+    finance:
+      description: "Financial services industry documents"
+      subtypes:
+        - banking
+        - investment
+        - insurance
+        - regulatory
+    construction:
+      description: "Construction industry documents"
+      subtypes:
+        - residential
+        - commercial
+        - infrastructure
+        - industrial
+    manufacturing:
+      description: "Manufacturing industry documents"
+      subtypes:
+        - discrete
+        - process
+        - automotive
+        - electronics
+    technology:
+      description: "Technology industry documents"
+      subtypes:
+        - software
+        - hardware
+        - services
+        - telecom
+  
+  document_types:
+    past_rfp_response:
+      description: "Previous RFP responses"
+    compliance_document:
+      description: "Compliance and regulatory documents"
+    solution_brief:
+      description: "Solutions and capabilities overview"
+    product_spec:
+      description: "Product specifications and technical details"
+    legal_document:
+      description: "Legal agreements and contracts"
+    financial_document:
+      description: "Financial information and pricing"
+    technical_document:
+      description: "Technical architectures and designs"

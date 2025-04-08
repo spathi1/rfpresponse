@@ -1,0 +1,124 @@
+# Security and Compliance Module Configuration
+# --------------------------------------------
+
+# Master switch for the entire module
+enabled: true
+
+# Document sensitivity classification settings
+sensitivity_classification:
+  enabled: true
+  default_level: internal  # public, internal, confidential, restricted
+  use_llm: true
+  
+  # Rule patterns for automatic classification
+  rule_patterns:
+    public:
+      - '\bpublic\b'
+      - '\bpress release\b'
+      - '\bfor everyone\b'
+    internal:
+      - '\binternal use only\b'
+      - '\binternal distribution\b'
+      - '\bcompany confidential\b'
+    confidential:
+      - '\bconfidential\b'
+      - '\bsensitive\b'
+      - '\bdo not share\b'
+    restricted:
+      - '\bhighly confidential\b'
+      - '\brestricted access\b'
+      - '\btop secret\b'
+      - '\bnot for distribution\b'
+  
+  # Custom sensitivity schemes for different industries
+  custom_schemes:
+    healthcare:
+      phi: 'Protected Health Information'
+      clinical: 'Clinical Trial Data'
+      research: 'Research Information'
+    finance:
+      pfi: 'Personal Financial Information'
+      trading: 'Trading Information'
+      market: 'Market Analysis'
+    government:
+      classified: 'Classified Information'
+      fouo: 'For Official Use Only'
+      cui: 'Controlled Unclassified Information'
+
+# PII detection and redaction settings
+pii_detection:
+  enabled: true
+  default_redaction: mask  # complete, mask, tokenize, encrypt
+  confidence_threshold: 0.7
+  
+  # PII types to detect
+  detection_types:
+    - name
+    - email
+    - phone
+    - address
+    - ssn
+    - dob
+    - credit_card
+    - bank_account
+    - passport
+    - driver_license
+    - ip_address
+    - health_info
+    - financial_info
+  
+  # Custom patterns for specific PII types
+  custom_patterns:
+    custom:
+      - '\bProject [A-Z][a-z]+ (\/[A-Z][0-9]{4})\b'  # Custom project codes
+    health_info:
+      - '\b[A-Z]{3}[-][0-9]{7}\b'  # Medical record numbers
+    financial_info:
+      - '\bACCT[#:]?\s*[0-9]{8,12}\b'  # Account numbers
+
+# Audit logging settings
+audit_logging:
+  enabled: true
+  tamper_proof: true
+  retention_days: 365
+  
+  # Event types to log
+  log_events:
+    - document_access
+    - document_modify
+    - classification
+    - pii_detection
+    - redaction
+    - configuration
+    - authentication
+    - authorization
+    - error
+  
+  # Export format for compliance reports
+  export_format: json
+
+# LLM provider settings
+llm:
+  provider: together.ai
+  model: togethercomputer/llama-2-70b-chat
+  api_key: 'YOUR_API_KEY_HERE'  # Replace with actual API key
+  timeout: 10
+  max_retries: 3
+
+# API settings
+api:
+  enabled: true
+  rate_limit: 100  # requests per minute
+  auth_required: true
+
+# Encryption settings
+encryption:
+  enabled: true
+  key_rotation_days: 90
+
+# Storage settings
+storage:
+  type: file  # file, database, s3
+  path: ./secure_storage
+  connection_string: ''  # For database storage
+  bucket_name: ''  # For S3 storage

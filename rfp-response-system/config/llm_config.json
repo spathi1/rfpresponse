@@ -1,0 +1,41 @@
+{
+  "provider": "together_ai",
+  "api_key": "your_together_ai_api_key",
+  "base_url": "https://api.together.xyz/v1",
+  "default_model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+  "timeout": 60,
+  "max_retries": 3,
+  "retry_delay": 2,
+  "max_tokens": 2048,
+  "temperature": 0.2,
+  "tasks": {
+    "document_classification": {
+      "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+      "temperature": 0.1,
+      "max_tokens": 1024,
+      "enabled": true,
+      "description": "Classifies documents by type, industry, and purpose"
+    },
+    "metadata_enhancement": {
+      "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+      "temperature": 0.2,
+      "max_tokens": 1536,
+      "enabled": true,
+      "description": "Extracts entities, topics, and technical terms from documents"
+    },
+    "content_summarization": {
+      "model": "meta-llama/Llama-3-70b-chat-hf",
+      "temperature": 0.3,
+      "max_tokens": 2048,
+      "enabled": true,
+      "description": "Generates executive summaries and section summaries"
+    },
+    "taxonomy_generation": {
+      "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+      "temperature": 0.1,
+      "max_tokens": 1024,
+      "enabled": true,
+      "description": "Enhances taxonomy structure with additional categories and hierarchies"
+    }
+  }
+}

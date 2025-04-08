@@ -1,0 +1,60 @@
+{
+  "storage_path": "./data/diagram_storage",
+  "temp_path": "./data/temp",
+  "ocr_engine": "tesseract",
+  "enable_structured_conversion": true,
+  "embedding_model": "all-MiniLM-L6-v2",
+  "llm": {
+    "type": "together",
+    "api_key": "",
+    "model_name": "together/llama-3-70b-instruct",
+    "vision_model": "Qwen/Qwen-VL-Chat"
+  },
+  "indexing": {
+    "auto_reindex": true,
+    "index_batch_size": 50,
+    "embedding_dimension": 384
+  },
+  "integration": {
+    "extract_during_preprocessing": true,
+    "enhance_document_metadata": true,
+    "index_diagrams_with_text": true,
+    "store_structured_representations": true
+  },
+  "extraction": {
+    "min_image_size": 100,
+    "max_image_size": 4000,
+    "min_diagram_confidence": 0.6,
+    "extract_charts": true,
+    "extract_images": false,
+    "context_window_size": 1000
+  },
+  "visualization": {
+    "generate_thumbnails": true,
+    "thumbnail_size": [200, 200],
+    "max_display_size": [800, 800],
+    "highlight_text_matches": true
+  },
+  "supported_formats": {
+    "document": [".pdf", ".docx", ".pptx"],
+    "image": [".png", ".jpg", ".jpeg", ".svg"],
+    "structured": [".mermaid", ".json"]
+  },
+  "performance": {
+    "parallel_extraction": true,
+    "max_workers": 4,
+    "batch_processing": true,
+    "max_batch_size": 10,
+    "timeout_seconds": 300
+  },
+  "advanced": {
+    "enable_diagram_merging": false,
+    "enable_diagram_splitting": true,
+    "enable_diagram_deduplication": true,
+    "deduplication_threshold": 0.9,
+    "cache_llm_responses": true,
+    "cache_max_size": 1000,
+    "enable_logging": true,
+    "log_level": "INFO"
+  }
+}

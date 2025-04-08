@@ -1,0 +1,111 @@
+# Advanced Content Analysis Module Configuration
+
+name: "RFP Document Advanced Analysis"
+version: "1.0"
+description: "Enhanced document processing capabilities for RFP documents"
+
+# Table Extraction Configuration
+table_extraction:
+  enabled: true
+  use_ai_model: true           # Enable AI assistance for complex tables
+  ai_provider: "together"      # "local" or "together"
+  together_api_key: "${TOGETHER_API_KEY}"  # Environment variable reference
+  together_model: "togethercomputer/llama-2-70b-chat"
+  local_model: "microsoft/table-transformer-detection"  # Fallback local model
+  device: "cuda:0"             # Use GPU if available, "cpu" otherwise
+  enable_fallback: true        # Enable fallback for failed extractions
+  formats:                     # Supported document formats
+    - "pdf"
+    - "docx"
+    - "html"
+    - "pptx"
+    - "text"
+
+# Language Detection Configuration
+language_detection:
+  enabled: true
+  use_ai_model: false          # Using built-in detection by default
+  ai_provider: "local"
+  together_api_key: "${TOGETHER_API_KEY}"
+  together_model: "togethercomputer/llama-2-70b-chat"
+  local_model: "xlm-roberta-base"
+  device: "cpu"
+  min_confidence: 0.7          # Minimum confidence threshold
+  section_detection: true      # Enable section-level language detection
+  min_section_length: 100      # Minimum text length for section analysis
+  supported_languages:         # Languages to prioritize in detection
+    - "en"  # English
+    - "fr"  # French
+    - "de"  # German
+    - "es"  # Spanish
+    - "it"  # Italian
+    - "pt"  # Portuguese
+    - "ru"  # Russian
+    - "zh"  # Chinese
+    - "ja"  # Japanese
+    - "ko"  # Korean
+    - "ar"  # Arabic
+  encoding_detection: true     # Detect encoding issues
+
+# Section Detection Configuration
+section_detection:
+  enabled: true
+  use_ai_model: true           # Use AI for improved section detection
+  ai_provider: "together"
+  together_api_key: "${TOGETHER_API_KEY}"
+  together_model: "togethercomputer/llama-2-70b-chat"
+  local_model: "bert-base-uncased"
+  device: "cuda:0"
+  min_section_length: 50       # Minimum text length for section
+  max_heading_length: 200      # Maximum length of heading text
+  heading_markers:             # Keywords that might indicate headings
+    - "HEADING"
+    - "TITLE"
+    - "SECTION"
+    - "CHAPTER"
+    - "PART"
+    - "APPENDIX"
+    - "REQUIREMENT"
+    - "EXHIBIT"
+
+# Storage Configuration
+storage:
+  type: "database"             # "filesystem", "database", or "cloud"
+  path: "./advanced_analysis_results"  # For filesystem storage
+  format: "json"               # "json" or "yaml" for file-based storage
+  database:
+    type: "postgresql"         # Database type
+    connection_string: "postgresql://user:password@localhost:5432/rfp_database"
+    table_prefix: "adv_analysis_"
+  cloud:
+    provider: "s3"             # Cloud storage provider
+    bucket: "rfp-documents"
+    prefix: "advanced-analysis/"
+    region: "us-east-1"
+    credentials:
+      access_key: "${AWS_ACCESS_KEY}"
+      secret_key: "${AWS_SECRET_KEY}"
+
+# Integration Options
+integration:
+  document_preprocessor:
+    hook_method: "post_process"
+    store_results: true
+    result_field: "advanced_analysis"
+  
+  metadata_extractor:
+    enhance_metadata: true
+    metadata_fields:
+      - "language"
+      - "structure"
+      - "table_count"
+  
+  corpus_taxonomy:
+    use_for_classification: true
+    taxonomy_mapping:
+      language: "document_language"
+      section_count: "document_complexity"
+  
+  llm_integration:
+    enrich_prompt: true
+    prompt_template: "Document has {table_count} tables and {section_count} sections. Primary language: {language}. {original_prompt}"

@@ -1,0 +1,58 @@
+flowchart TB
+    subgraph Config["Configuration"]
+        direction TB
+        config_file["Configuration File"]
+        doc_dir["Document Directory"]
+        ind_types["Industry Types"]
+        proc_params["Processing Parameters"]
+    end
+
+    subgraph Input["Document Sources"]
+        direction TB
+        docx["DOCX Files"]
+        pdf["PDF Files"]
+        pptx["PPTX Files"]
+        md["Markdown Files"]
+        txt["Text Files"]
+    end
+
+    subgraph Pipeline["Processing Pipeline"]
+        direction TB
+        doc_inventory["Document Inventory"]
+        doc_preproc["Document Preprocessor"]
+        meta_extract["Metadata Extractor"]
+        corpus_tax["Corpus Taxonomy"]
+    end
+
+    subgraph Output["Output Data"]
+        direction TB
+        proc_docs["Processed Documents"]
+        tax_struct["Taxonomy Structure"]
+        ing_report["Ingestion Report"]
+    end
+
+    config_file --> doc_inventory
+    doc_dir --> Input
+    ind_types --> meta_extract
+    proc_params --> doc_preproc
+
+    Input --> doc_inventory
+    doc_inventory --> doc_preproc
+    doc_preproc --> meta_extract
+    meta_extract --> corpus_tax
+
+    corpus_tax --> proc_docs
+    corpus_tax --> tax_struct
+    doc_preproc --> proc_docs
+    meta_extract --> proc_docs
+    Pipeline --> ing_report
+
+    classDef configNode fill:#f9f,stroke:#333,stroke-width:1px;
+    classDef inputNode fill:#bbf,stroke:#333,stroke-width:1px;
+    classDef pipelineNode fill:#bfb,stroke:#333,stroke-width:1px;
+    classDef outputNode fill:#fbb,stroke:#333,stroke-width:1px;
+
+    class Config configNode;
+    class Input inputNode;
+    class Pipeline pipelineNode;
+    class Output outputNode;
