@@ -12,6 +12,11 @@ requests>=2.26.0  # For API requests
 # Vector Search
 faiss-cpu>=1.7.2  # Use faiss-gpu for GPU acceleration if needed
 sentence-transformers>=2.2.0  # For text embeddings
+qdrant-client>=1.1.1  # For vector storage
+
+# NLP Processing
+spacy>=3.6.0  # For NLP processing
+nltk>=3.9.1  # For text processing
 
 # LLM Integration
 together>=0.1.5  # Together.ai client library
@@ -22,37 +27,33 @@ scikit-image>=0.18.3  # For image processing
 
 # Data Management
 dataclasses-json>=0.5.7  # For serializing/deserializing dataclasses
+sqlalchemy>=1.4.0  # For SQL database access
+sqlite3  # Built into Python
 
 # Additional Utilities
 tqdm>=4.62.3  # For progress bars
 python-dateutil>=2.8.2  # For date handling
 pandas>=1.3.0
-numpy>=1.20.0
 pyyaml>=6.0
 langid>=1.1.6
 langdetect>=1.0.9
 beautifulsoup4>=4.10.0
-pytesseract>=0.3.8
 transformers>=4.18.0
 torch>=1.10.0
 pdfplumber>=0.7.0
-pdf2image>=1.16.0
 tabula-py>=2.3.0
-PyMuPDF>=1.19.0
-python-docx>=0.8.11
-python-pptx>=0.6.21
 openpyxl>=3.0.9
 xlrd>=2.0.1
-together>=0.1.5
-transformers>=4.18.0
-torch>=1.10.0
 boto3>=1.20.0  # For AWS S3
+
 # Development Tools
 pytest>=6.2.5  # For testing
 black>=21.9b0  # For code formatting
 mypy>=0.910  # For type checking
-sqlalchemy>=1.4.0
 psycopg2-binary>=2.9.3  # For PostgreSQL
 pymongo>=4.0.0  # For MongoDB
 google-cloud-storage>=2.0.0  # For Google Cloud Storage
 azure-storage-blob>=12.9.0  # For Azure Blob Storage
+
+
+

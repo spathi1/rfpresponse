@@ -1,0 +1,10 @@
+{
+    "graph_storage_path": "data/knowledge_graph.gpickle",
+    "entity_types": ["ORG", "PRODUCT", "GPE", "TECHNOLOGY", "REQUIREMENT"],
+    "relationship_types": ["REQUIRES", "MENTIONS", "ADDRESSES", "SIMILAR_TO", "PART_OF"],
+    "custom_entities": {
+        "TECHNOLOGY": ["cloud", "AI", "machine learning", "blockchain", "IoT"],
+        "REQUIREMENT": ["must", "shall", "required", "mandatory"]
+    },
+    "similarity_threshold": 0.75
+}
